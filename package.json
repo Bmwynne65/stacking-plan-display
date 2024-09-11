@@ -1,8 +1,8 @@
 {
-  "homepage": "http://bmwynne65.github.io/stacking-plan-display",
+  "homepage": "https://bmwynne65.github.io/stacking-plan-display/",
   "name": "stacking-plan-display",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "dependencies": {
     "@react-google-maps/api": "^2.19.3",
     "@testing-library/jest-dom": "^5.17.0",
