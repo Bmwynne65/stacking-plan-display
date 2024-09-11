@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/stacking-plan-display/static/css/main.982fa5c6.css",
-    "main.js": "/stacking-plan-display/static/js/main.fa8bab6e.js",
+    "main.js": "/stacking-plan-display/static/js/main.92318368.js",
     "static/media/denvertechcenter.jpg": "/stacking-plan-display/static/media/denvertechcenter.0a111bf0964618408b80.jpg",
     "index.html": "/stacking-plan-display/index.html",
     "main.982fa5c6.css.map": "/stacking-plan-display/static/css/main.982fa5c6.css.map",
-    "main.fa8bab6e.js.map": "/stacking-plan-display/static/js/main.fa8bab6e.js.map"
+    "main.92318368.js.map": "/stacking-plan-display/static/js/main.92318368.js.map"
   },
   "entrypoints": [
     "static/css/main.982fa5c6.css",
-    "static/js/main.fa8bab6e.js"
+    "static/js/main.92318368.js"
   ]
 }
