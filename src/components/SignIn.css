@@ -1,0 +1,63 @@
+.signin-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #ddd;
+}
+
+.form-container {
+  background-color: #fff;
+  width: 450px;
+  padding: 2rem;
+  box-shadow: 0 1px 2px;
+  border-radius: 5px;
+}
+
+.form-container h2 {
+  font-size: 2.5rem;
+  padding: 1rem 0;
+  text-align: center;
+}
+
+.form-container form {
+  margin: 2rem 0;
+}
+
+.form-control {
+  position: relative;
+}
+
+.form-control input {
+  width: 100%;
+  border: 1px solid #ddd;
+  font-family: inherit;
+  font-size: 1.2rem;
+  padding: 0.75rem 2rem;
+  margin-bottom: 1rem;
+  border-radius: 5px;
+}
+
+.form-control .icon {
+  position: absolute;
+  left: 5px;
+  top: 13px;
+  font-size: 1.5rem;
+}
+
+form button {
+  width: 100%;
+  background-color: slateblue;
+  outline: none;
+  border: none;
+  font-family: inherit;
+  color: #fff;
+  padding: 1rem 0;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 50px;
+}
+
+form button:active {
+  transform: scale(0.95);
+}

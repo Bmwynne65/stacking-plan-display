@@ -1,24 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { React, useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Home from "./components/pages/Home";
+import Map from "./components/pages/Map";
+// import GetData from "./components/pages/GetData";
+import Manager from "./components/pages/Manager";
+import Update from "./components/Update";
+import Add from "./components/Add";
+import ScrollToTop from "./components/ScrollToTop";
+import SignIn from "./components/SignIn";
+import SignUp from "./components/Signup";
 
 function App() {
+  const [Form, setForm] = useState("login");
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      {/* {Form === "login" ? (
+        <SignIn FormHandle={setForm} />
+      ) : (
+        <SignUp FormHandle={setForm} />
+      )} */}
+      <Router>
+        <ScrollToTop />
+        <Routes>
+          <Route path="/sign-in" exact element={<SignIn />} />
+          <Route path="/" exact element={<Home />} />
+          <Route path="/map" exact element={<Map />} />
+          {/* <Route path="/getdata" exact element={<GetData />} /> */}
+          <Route path="/manager" exact element={<Manager />} />
+          <Route path="/update/:id" exact element={<Update />} />
+          <Route path="/add" exact element={<Add />} />
+        </Routes>
+      </Router>
+    </>
   );
 }
 
