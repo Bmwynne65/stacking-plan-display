@@ -13,6 +13,7 @@ app.use(bodyParser.urlencoded({ limit: "50mb", extended: true })); // For URL-en
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Create a MySQL connection
 const db = mysql.createConnection({
@@ -31,6 +32,19 @@ db.connect((err) => {
   }
 });
 
+// Helper function to check if an address already exists in the database
+const addressExists = (address, callback) => {
+  const query = "SELECT COUNT(*) AS count FROM buildinginfo WHERE address = ?";
+  db.query(query, [address], (err, results) => {
+    if (err) {
+      return callback(err, null);
+    }
+    const count = results[0].count;
+    callback(null, count > 0);
+  });
+};
+
+// Delete item
 app.delete("/api/items/delete/:id", (req, res) => {
   const id = req.params.id;
   const query = "DELETE FROM buildinginfo WHERE buildingID = ?"; // Correct SQL query
@@ -79,23 +93,25 @@ app.get("/api/items/:id", (req, res) => {
       return res.status(500).json({ error: err.message });
     }
 
-    // Convert buffer to Base64
+    // Convert the buffer (binary data) to Base64
     const items = results.map((item) => {
       if (item.img) {
+        // Convert the buffer into a base64-encoded string
         const base64Image = Buffer.from(item.img).toString("base64");
         return {
           ...item,
-          imageBlob: `data:image/jpeg;base64,${base64Image}`, // Create Base64 string for frontend display
+          imageBlob: `data:image/jpeg;base64,${base64Image}`, // Base64 string with MIME type
         };
       }
       return item;
     });
 
+    // Send the modified result with the imageBlob field to the client
     res.json(items);
   });
 });
 
-// Route to update item
+// Route to update specific item
 app.put("/api/items/:id", (req, res) => {
   const id = req.params.id;
   const values = req.body;
@@ -114,7 +130,7 @@ app.put("/api/items/:id", (req, res) => {
 
   // Ensure proper SQL query with placeholders
   const query =
-    "UPDATE buildinginfo SET address = ?, subMarket = ?, yoc = ?, currentOwner = ?, previousOwner = ?, leaseRate = ?, vacancyRate = ?, lsf = ?, `on` = ?, img = ? WHERE buildingID = ?";
+    "UPDATE buildinginfo SET address = ?, subMarket = ?, yoc = ?, currentOwner = ?, previousOwner = ?, leaseRate = ?, vacancyRate = ?, lsf = ?, `on` = ?, link = ?, img = ? WHERE buildingID = ?";
   const data = [
     values.address,
     values.subMarket,
@@ -125,6 +141,7 @@ app.put("/api/items/:id", (req, res) => {
     values.vacancyRate,
     values.lsf,
     values.on,
+    values.link,
     imageBuffer, // This is the binary data for the image
     id,
   ];
@@ -142,45 +159,67 @@ app.put("/api/items/:id", (req, res) => {
 
 //Route to insert item
 app.post("/api/items/add", (req, res) => {
+  console.log("Data Entered Post Request");
   const values = req.body;
   console.log("Received data:", values);
-  const query =
-    "INSERT INTO buildinginfo (address, subMarket, yoc, currentOwner, previousOwner, leaseRate, vacancyRate, lsf, on) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-  const data = [
-    values.address,
-    values.subMarket,
-    values.yoc,
-    values.currentOwner,
-    values.previousOwner,
-    values.leaseRate,
-    values.vacancyRate,
-    values.lsf,
-    values.on,
-    values.link,
-    values.img,
-  ];
+  const address = values.address;
 
-  db.query(query, data, (err, results) => {
+  let imageBuffer = null;
+
+  if (values.img) {
+    try {
+      // Convert the image data (which should be an array) back to a buffer
+      imageBuffer = Buffer.from(values.img); // Ensure `values.img` is an array of bytes (like Uint8Array)
+      console.log("Received image buffer:", imageBuffer);
+    } catch (error) {
+      console.error("Failed to process image buffer:", error);
+      return res.status(400).json({ error: "Invalid image data" });
+    }
+  }
+
+  // First query to check if the address already exists
+  const checkAddressQuery = "SELECT * FROM buildinginfo WHERE address = ?";
+  db.query(checkAddressQuery, [address], (err, results) => {
     if (err) {
-      console.error("Error executing query:", err);
+      console.error("Error checking address:", err);
       return res.status(500).json({ error: err.message });
     }
-    console.log("Query successful:", results);
-    res.json({ message: "Item added successfully" });
+
+    // If the address already exists, return a message
+    if (results.length > 0) {
+      console.log("Address already exists:", address);
+      return res.status(400).json({ message: "Address already exists" });
+    }
+
+    // If the address doesn't exist, proceed with the insert query
+    const insertQuery = `
+      INSERT INTO buildinginfo (address, subMarket, yoc, currentOwner, previousOwner, leaseRate, vacancyRate, lsf, \`on\`, link, img)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+    const data = [
+      values.address,
+      values.subMarket,
+      values.yoc === "" ? null : values.yoc,
+      values.currentOwner,
+      values.previousOwner,
+      values.leaseRate === "" ? null : values.leaseRate,
+      values.vacancyRate === "" ? null : values.vacancyRate, // Handle empty vacancyRate as null
+      values.lsf,
+      values.on,
+      values.link,
+      imageBuffer,
+    ];
+
+    db.query(insertQuery, data, (err, results) => {
+      if (err) {
+        console.error("Error executing query:", err);
+        return res.status(500).json({ error: err.message });
+      }
+      console.log("Query successful:", results);
+      res.json({ message: "Item added successfully" });
+    });
   });
 });
-
-// Helper function to check if an address already exists in the database
-const addressExists = (address, callback) => {
-  const query = "SELECT COUNT(*) AS count FROM buildinginfo WHERE address = ?";
-  db.query(query, [address], (err, results) => {
-    if (err) {
-      return callback(err, null);
-    }
-    const count = results[0].count;
-    callback(null, count > 0);
-  });
-};
 
 // API endpoint to handle data submission
 app.post("/submit-property", (req, res) => {

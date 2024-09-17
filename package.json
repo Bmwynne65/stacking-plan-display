@@ -2,7 +2,7 @@
   "homepage": "https://bmwynne65.github.io/stacking-plan-display/",
   "name": "stacking-plan-display",
   "version": "0.1.0",
-  "private": false,
+  "private": true,
   "dependencies": {
     "@react-google-maps/api": "^2.19.3",
     "@testing-library/jest-dom": "^5.17.0",
@@ -23,8 +23,6 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

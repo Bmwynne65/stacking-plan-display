@@ -44,6 +44,9 @@ form {
 }
 
 .import-submit2 {
+  width: 100%;
+  text-align: center;
+  text-decoration: none;
   padding: 10px 20px;
   background-color: blue;
   color: white;

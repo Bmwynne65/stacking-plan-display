@@ -61,33 +61,8 @@ const MapWithMarkers = () => {
         .catch((error) => {
           console.error("There was an error fetching the data!", error);
         });
-
-      // Event listener to detect clicks outside the InfoWindow
-      const handleClickOutside = (event) => {
-        if (ignoreNextClick.current) {
-          ignoreNextClick.current = false;
-          return;
-        }
-
-        if (
-          infoWindowRef.current &&
-          !infoWindowRef.current.contains(event.target)
-        ) {
-          setActiveMarker(null);
-        }
-      };
-
-      // Attach the event listener when the map is loaded
-      if (mapLoaded) {
-        document.addEventListener("click", handleClickOutside);
-      }
-
-      // Cleanup the event listener
-      return () => {
-        document.removeEventListener("click", handleClickOutside);
-      };
     }
-  }, [isLoaded, mapLoaded]);
+  }, [isLoaded]);
 
   const geocodeAddress = (address) => {
     return new Promise((resolve, reject) => {
@@ -128,6 +103,11 @@ const MapWithMarkers = () => {
     }
   };
 
+  const handleMapClick = () => {
+    // Close the InfoWindow when clicking on the map
+    setActiveMarker(null);
+  };
+
   // Handle double-click to navigate to the building link
   const handleDoubleClick = (link) => {
     window.open(link, "_blank"); // Open in a new tab
@@ -139,6 +119,7 @@ const MapWithMarkers = () => {
       center={mapCenter} // Use the dynamic mapCenter state
       zoom={13}
       onLoad={handleMapLoad}
+      onClick={handleMapClick} // Handle map click to close InfoWindow
       onDragEnd={handleDragEnd} // Update center on map drag end
     >
       {locations.map(
@@ -148,23 +129,23 @@ const MapWithMarkers = () => {
               key={index}
               position={location.position}
               title={location.address}
-              onClick={() => handleMarkerClick(index, location.position)} // Pass the marker position to the click handler
+              onClick={() => handleMarkerClick(index)} // Set active marker
             >
               {activeMarker === index && (
                 <InfoWindow
                   options={{ disableAutoPan: true }}
-                  onCloseClick={() => setActiveMarker(null)}
+                  onCloseClick={() => setActiveMarker(null)} // Close InfoWindow
                 >
-                  <section class="articles">
+                  <section className="articles">
                     <article className="art">
-                      <div class="article-wrapper">
+                      <div className="article-wrapper">
                         <figure className="fig">
                           <img
                             src={location.imageBlob}
                             alt={"Picture of " + location.address}
                           />
                         </figure>
-                        <div class="article-body">
+                        <div className="article-body">
                           <h2>{location.address}</h2>
                           <p>
                             <strong>Year of Construction:</strong>{" "}
@@ -200,23 +181,23 @@ const MapWithMarkers = () => {
                           </p>
                           <a
                             href="#"
-                            class="read-more"
+                            className="read-more"
                             onDoubleClick={() =>
                               handleDoubleClick(location.link)
                             }
                           >
                             Read more{" "}
-                            <span class="sr-only">{location.address}</span>
+                            <span className="sr-only">{location.address}</span>
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
-                              class="icon"
+                              className="icon"
                               viewBox="0 0 20 20"
                               fill="currentColor"
                             >
                               <path
-                                fill-rule="evenodd"
+                                fillRule="evenodd"
                                 d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
-                                clip-rule="evenodd"
+                                clipRule="evenodd"
                               />
                             </svg>
                           </a>

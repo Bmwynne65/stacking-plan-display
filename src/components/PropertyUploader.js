@@ -94,11 +94,9 @@ const PropertyUploader = ({ refreshBuildings }) => {
           Upload
         </button>
         <p>or</p>
-        <button className="import-submit2">
-          <Link className="link-dec" to={`/add`}>
-            Add +
-          </Link>
-        </button>
+        <Link className="import-submit2" to={`/add`}>
+          Add +
+        </Link>
         <div className="upload-message">
           {uploadMessage && <p>{uploadMessage}</p>}
         </div>

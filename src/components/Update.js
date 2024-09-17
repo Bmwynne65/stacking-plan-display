@@ -37,7 +37,8 @@ function Update() {
           vacancyRate: res.data[0].vacancyRate,
           lsf: res.data[0].lsf,
           on: res.data[0].on,
-          img: res.data[0].img,
+          link: res.data[0].link,
+          img: res.data[0].imageBlob, // Assuming imageBlob is the base64 string
         });
       })
       .catch((error) => {
@@ -45,6 +46,7 @@ function Update() {
       });
   }, []);
 
+  // console.log("img:", values.img); // Debugging line to check values
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -197,21 +199,34 @@ function Update() {
             <input
               className="input"
               type="text"
-              name="vacancy"
+              name="on"
               placeholder="Enter Date Purchased"
               value={values.on}
               onChange={(e) => setValues({ ...values, on: e.target.value })}
+            />
+          </div>
+          <div className="form-div">
+            <label className="label">link:</label>
+            <input
+              className="input"
+              type="text"
+              name="link"
+              placeholder="Enter Date Purchased"
+              value={values.link}
+              onChange={(e) => setValues({ ...values, link: e.target.value })}
             />
           </div>
           {/* Display the current image if it exists */}
           <div className="form-div">
             <label className="label">Current Image:</label>
             {values.img ? (
-              <img
-                src={values.img}
-                alt="Current"
-                style={{ width: "200px", height: "auto" }}
-              />
+              <figure className="fig">
+                <img
+                  src={values.img} // Reference the imageBlob containing base64 string
+                  alt={"Picture of " + values.address}
+                  style={{ width: "200px", height: "auto" }} // Optional styling for image size
+                />
+              </figure>
             ) : (
               <p>No image available</p>
             )}
