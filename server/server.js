@@ -10,7 +10,13 @@ app.use(bodyParser.json({ limit: "50mb" })); // For JSON bodies
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true })); // For URL-encoded bodies
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://bmwynne65.github.io", // Allow requests from your GitHub Pages site
+    methods: ["GET", "POST", "PUT", "DELETE"], // Allowed methods
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
