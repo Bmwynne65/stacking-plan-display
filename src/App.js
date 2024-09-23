@@ -22,7 +22,7 @@ function App() {
       ) : (
         <SignUp FormHandle={setForm} />
       )} */}
-      <Router basename="/stacking-plan-display">
+      <Router basename="/">
         <ScrollToTop />
         <Routes>
           <Route path="/sign-in" exact element={<SignIn />} />
