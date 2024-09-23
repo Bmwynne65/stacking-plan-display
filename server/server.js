@@ -17,10 +17,10 @@ app.use(express.urlencoded({ extended: true }));
 
 // Create a MySQL connection
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "root", // Replace with your MySQL username
-  password: "Bmw@138160", // Replace with your MySQL password
-  database: "testinfo", // Replace with your database name
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER, // Replace with your MySQL username
+  password: process.env.DB_PASS, // Replace with your MySQL password
+  database: process.env.DB_NAME, // Replace with your database name
 });
 
 // Connect to MySQL
@@ -34,7 +34,7 @@ db.connect((err) => {
 
 // Helper function to check if an address already exists in the database
 const addressExists = (address, callback) => {
-  const query = "SELECT COUNT(*) AS count FROM buildinginfo WHERE address = ?";
+  const query = "SELECT COUNT(*) AS count FROM buildingInfo WHERE address = ?";
   db.query(query, [address], (err, results) => {
     if (err) {
       return callback(err, null);
@@ -47,7 +47,7 @@ const addressExists = (address, callback) => {
 // Delete item
 app.delete("/api/items/delete/:id", (req, res) => {
   const id = req.params.id;
-  const query = "DELETE FROM buildinginfo WHERE buildingID = ?"; // Correct SQL query
+  const query = "DELETE FROM buildingInfo WHERE buildingID = ?"; // Correct SQL query
 
   db.query(query, [id], (err, results) => {
     if (err) {
@@ -62,7 +62,7 @@ app.delete("/api/items/delete/:id", (req, res) => {
 
 // Route to get all items
 app.get("/api/items", (req, res) => {
-  const query = "SELECT * FROM buildinginfo";
+  const query = "SELECT * FROM buildingInfo";
   db.query(query, (err, results) => {
     if (err) {
       return res.status(500).json({ error: err });
@@ -87,7 +87,7 @@ app.get("/api/items", (req, res) => {
 // Route to get specific item
 app.get("/api/items/:id", (req, res) => {
   const id = req.params.id;
-  const query = "SELECT * FROM buildinginfo WHERE buildingID = ?"; // Replace with your table name
+  const query = "SELECT * FROM buildingInfo WHERE buildingID = ?"; // Replace with your table name
   db.query(query, [id], (err, results) => {
     if (err) {
       return res.status(500).json({ error: err.message });
@@ -130,7 +130,7 @@ app.put("/api/items/:id", (req, res) => {
 
   // Ensure proper SQL query with placeholders
   const query =
-    "UPDATE buildinginfo SET address = ?, subMarket = ?, yoc = ?, currentOwner = ?, previousOwner = ?, leaseRate = ?, vacancyRate = ?, lsf = ?, `on` = ?, link = ?, img = ? WHERE buildingID = ?";
+    "UPDATE buildingInfo SET address = ?, subMarket = ?, yoc = ?, currentOwner = ?, previousOwner = ?, leaseRate = ?, vacancyRate = ?, lsf = ?, `on` = ?, link = ?, img = ? WHERE buildingID = ?";
   const data = [
     values.address,
     values.subMarket,
@@ -178,7 +178,7 @@ app.post("/api/items/add", (req, res) => {
   }
 
   // First query to check if the address already exists
-  const checkAddressQuery = "SELECT * FROM buildinginfo WHERE address = ?";
+  const checkAddressQuery = "SELECT * FROM buildingInfo WHERE address = ?";
   db.query(checkAddressQuery, [address], (err, results) => {
     if (err) {
       console.error("Error checking address:", err);
@@ -193,7 +193,7 @@ app.post("/api/items/add", (req, res) => {
 
     // If the address doesn't exist, proceed with the insert query
     const insertQuery = `
-      INSERT INTO buildinginfo (address, subMarket, yoc, currentOwner, previousOwner, leaseRate, vacancyRate, lsf, \`on\`, link, img)
+      INSERT INTO buildingInfo (address, subMarket, yoc, currentOwner, previousOwner, leaseRate, vacancyRate, lsf, \`on\`, link, img)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
     const data = [
@@ -252,7 +252,7 @@ app.post("/submit-property", (req, res) => {
 
     // Insert the new property data into the database
     const query = `
-      INSERT INTO buildinginfo (address, subMarket, yoc, currentOwner, previousOwner, leaseRate, vacancyRate, lsf, \`on\`, link, img)
+      INSERT INTO buildingInfo (address, subMarket, yoc, currentOwner, previousOwner, leaseRate, vacancyRate, lsf, \`on\`, link, img)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
     db.query(
