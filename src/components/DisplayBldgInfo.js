@@ -24,9 +24,7 @@ const DisplayBldgInfo = () => {
   // Fetch data from the API
   const fetchBuildings = () => {
     axios
-      .get(
-        "https://bmwynne65.github.io/stacking-plan-display/manager/api/items"
-      )
+      .get("http://localhost:5000/api/items")
       .then((response) => {
         setBuildings(response.data);
         setFilteredBuildings(response.data); // Display the data immediately
