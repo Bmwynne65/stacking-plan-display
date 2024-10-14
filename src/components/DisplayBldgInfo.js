@@ -45,7 +45,7 @@ const DisplayBldgInfo = () => {
 
     if (confirmDelete) {
       axios
-        .delete(`http://localhost:5000/api/items/delete/${buildingId}`)
+        .delete(process.env.REACT_APP_URI + `${buildingId}`)
         .then((res) => {
           console.log("Building deleted successfully:", res.data);
           // Update the state to remove the deleted building
