@@ -29,17 +29,17 @@ function Navbar() {
       <nav className="navbar">
         <div className="navbar-container">
           <NavLink to="/" className="navbar-logo" onClick={closeMobileMenu}>
-            SKYE
+            GREENWOOD
             {/* <i className="fab fa-typo3" /> */}
-            {/* SKYE
+            {/* GREENWOOD
             <img
               className="img-logo"
-              src="../images/SKYE-LOGO-ICON.png"
+              src="../images/GREENWOOD-LOGO-ICON.png"
               alt="logo"
             /> */}
             {/* <img
               className="img-logo"
-              src="../images/SKYE-LOGO.webp"
+              src="../images/GREENWOOD-LOGO.webp"
               alt="logo"
             /> */}
           </NavLink>

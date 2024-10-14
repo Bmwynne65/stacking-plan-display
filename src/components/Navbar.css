@@ -30,7 +30,7 @@
 }
 
 .navbar-logo:hover {
-  color: #ffdb3c;
+  color: #1c792b;
 }
 
 .navbar-logo img {
@@ -67,11 +67,11 @@
 }
 
 .nav-links:hover {
-  color: #ffdb3c;
+  color: #1c792b;
 }
 
 .nav-links:hover {
-  border-bottom: 4px solid #ffdb3c;
+  border-bottom: 4px solid #1c792b;
   transition: all 0.2s ease-out;
 }
 
@@ -80,7 +80,7 @@
 }
 
 .fa-bars:hover {
-  color: #ffdb3c;
+  color: #1c792b;
 }
 
 .nav-links-mobile {
@@ -88,7 +88,7 @@
 }
 
 .nav-links-mobile:hover {
-  color: #ffdb3c;
+  color: #1c792b;
 }
 
 .menu-icon {
@@ -96,12 +96,12 @@
 }
 
 .nav-links.active {
-  color: #ffdb3c; /* Highlight color for active links */
-  border-bottom: 2px solid #ffdb3c; /* Optional: underline or other styles */
+  color: #1c792b; /* Highlight color for active links */
+  border-bottom: 2px solid #1c792b; /* Optional: underline or other styles */
 }
 
 .nav-links-mobile.active {
-  color: #ffdb3c; /* Highlight color for active mobile links */
+  color: #1c792b; /* Highlight color for active mobile links */
 }
 
 @media screen and (max-width: 960px) {
@@ -161,7 +161,7 @@
   }
 
   .fa-times {
-    color: #ffdb3c;
+    color: #1c792b;
     font-size: 2rem;
   }
 
@@ -181,18 +181,18 @@
   }
 
   .nav-links-mobile:hover {
-    background: #ffdb3c;
+    background: #1c792b;
     color: #242424;
     transition: 250ms;
-    border: 1px solid #ffdb3c;
+    border: 1px solid #1c792b;
   }
 
   .nav-links.active {
-    color: #ffdb3c; /* Highlight color for active links */
-    border-bottom: 2px solid #ffdb3c; /* Optional: underline or other styles */
+    color: #1c792b; /* Highlight color for active links */
+    border-bottom: 2px solid #1c792b; /* Optional: underline or other styles */
   }
 
   .nav-links-mobile.active {
-    color: #ffdb3c; /* Highlight color for active mobile links */
+    color: #1c792b; /* Highlight color for active mobile links */
   }
 }

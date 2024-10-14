@@ -42,7 +42,7 @@ const MapWithMarkers = () => {
     if (isLoaded) {
       // Fetch data from the backend
       axios
-        .get("http://localhost:5000/api/items")
+        .get(`${process.env.REACT_APP_URI}/buildings`)
         .then((response) => {
           const fetchLocations = async () => {
             const geocodedLocations = await Promise.all(

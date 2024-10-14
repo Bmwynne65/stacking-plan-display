@@ -61,7 +61,7 @@ td {
 
 tr:nth-child(n + 1):hover {
   cursor: pointer;
-  background-color: #f5dc51;
+  background-color: #c9ccc9;
 }
 
 tr:nth-child(even) {
@@ -183,7 +183,7 @@ button {
 
 /* Change color of dropdown links on hover */
 .dropdown-content a:hover {
-  background-color: #ffdb3c;
+  background-color: #a6f0b1;
 }
 
 /* Show the dropdown menu on hover */
@@ -203,7 +203,7 @@ button {
 }
 
 .subMarket-filter-btn:hover {
-  background-color: #ffdb3c;
+  background-color: #9aa09b;
 }
 
 /* The container <div> for Clear Button */

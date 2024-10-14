@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import "./DisplayBldgInfo.css";
-import PropertyUploader from "./PropertyUploader";
+import React, { useState, useEffect } from "react"
+import { Link } from "react-router-dom"
+import axios from "axios"
+import "./DisplayBldgInfo.css"
+import PropertyUploader from "./PropertyUploader"
 
 const DisplayBldgInfo = () => {
   const [buildings, setBuildings] = useState([]);
@@ -20,11 +20,10 @@ const DisplayBldgInfo = () => {
   //   subMarket: "",
   //   vacancyRate: "",
   // });
-
   // Fetch data from the API
   const fetchBuildings = () => {
     axios
-      .get("http://localhost:5000/api/items")
+      .get(process.env.REACT_APP_URI + "/buildings")
       .then((response) => {
         setBuildings(response.data);
         setFilteredBuildings(response.data); // Display the data immediately
@@ -170,7 +169,7 @@ const DisplayBldgInfo = () => {
                 })
                 .map((building) => (
                   <tr
-                    key={building.buildingId}
+                    key={building._Id}
                     onDoubleClick={() => handleDoubleClick(building.link)}
                   >
                     <td
@@ -183,7 +182,7 @@ const DisplayBldgInfo = () => {
                     <td>{building.yoc}</td>
                     <td>{building.currentOwner}</td>
                     <td>{building.previousOwner}</td>
-                    <td>{building.leaseRate}</td>
+                    <td>${building.leaseRate}/SF</td>
                     <td>{building.vacancyRate}%</td>
                     <td>${building.lsf}</td>
                     <td>{building.on}</td>
@@ -191,13 +190,13 @@ const DisplayBldgInfo = () => {
                       <div className="btn-layout">
                         <button
                           className="btn-del"
-                          onClick={() => handleDelete(building.buildingId)}
+                          onClick={() => handleDelete(building._id)}
                         >
                           Delete
                         </button>
                         <Link
                           className="btn-upd"
-                          to={`/update/${building.buildingId}`}
+                          to={`/update/${building._id}`}
                         >
                           Update
                         </Link>

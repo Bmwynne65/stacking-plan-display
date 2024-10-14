@@ -6,7 +6,7 @@ const GetData = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/items")
+      .get(`${process.env.REACT_APP_URI}/api/items`)
       .then((response) => {
         setBuildings(response.data);
       })

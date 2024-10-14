@@ -17,9 +17,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // Create a MySQL connection
 const db = mysql.createConnection({
-  host: "temp-repo.cji0a8sikfuw.us-east-2.rds.amazonaws.com",
-  user: "admin", // Replace with your MySQL username
-  password: "BuildingRepo2024", // Replace with your MySQL password
+  host: "127.0.0.1",
+  user: "root", // Replace with your MySQL username
+  password: "Bmw@138160", // Replace with your MySQL password
   database: "Building_Info", // Replace with your database name
 });
 

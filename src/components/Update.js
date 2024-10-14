@@ -6,6 +6,7 @@ import Navbar from "./Navbar";
 
 function Update() {
   const { id } = useParams();
+  // console.log("ID: ", id)
   const [values, setValues] = useState({
     id: id,
     address: "",
@@ -22,44 +23,46 @@ function Update() {
   const [imagePreview, setImagePreview] = useState(""); // To preview the uploaded image
 
   useEffect(() => {
-    // Fetch data from the API on component mount
+    // Fetch data from the API when component mounts
     axios
-      .get("http://localhost:5000/api/items/" + id)
+      .get(`${process.env.REACT_APP_URI}/buildings/${id}`) // Use the correct API endpoint for a single building
       .then((res) => {
+        const building = res.data; // Assuming res.data is an object representing a single building
         setValues({
-          ...values,
-          address: res.data[0].address,
-          subMarket: res.data[0].subMarket,
-          yoc: res.data[0].yoc,
-          currentOwner: res.data[0].currentOwner,
-          previousOwner: res.data[0].previousOwner,
-          leaseRate: res.data[0].leaseRate,
-          vacancyRate: res.data[0].vacancyRate,
-          lsf: res.data[0].lsf,
-          on: res.data[0].on,
-          link: res.data[0].link,
-          img: res.data[0].imageBlob, // Assuming imageBlob is the base64 string
+          id: building._id,
+          address: building.address || "",
+          subMarket: building.subMarket || "",
+          yoc: building.yoc || "",
+          currentOwner: building.currentOwner || "",
+          previousOwner: building.previousOwner || "",
+          leaseRate: building.leaseRate || "",
+          vacancyRate: building.vacancyRate || "",
+          lsf: building.lsf || "",
+          on: building.on || "",
+          link: building.link || "",
+          img: building.imageBlob || "", // Assuming imageBlob is the base64 image string
         });
       })
       .catch((error) => {
         console.error("There was an error fetching the data!", error);
       });
-  }, []);
+  }, [id]); // Add `id` as a dependency to make sure it runs when the `id` changes
+  
 
   // console.log("img:", values.img); // Debugging line to check values
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     // Prepare the data object
     const data = {
       ...values,
       img: imageBuffer ? Array.from(imageBuffer) : null, // Ensure we send the binary image as an array
     };
-
+  
     axios
-      .put("http://localhost:5000/api/items/" + id, data)
+      .patch(`${process.env.REACT_APP_URI}/buildings/${id}`, data)
       .then((res) => {
         console.log("Update successful:", res.data);
         navigate("/manager");
@@ -68,6 +71,7 @@ function Update() {
         console.error("There was an error updating the data!", error);
       });
   };
+  
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -77,17 +81,18 @@ function Update() {
         const arrayBuffer = reader.result; // This is an ArrayBuffer
         const buffer = new Uint8Array(arrayBuffer); // Convert ArrayBuffer to Uint8Array
         setImageBuffer(buffer); // Set image buffer for binary storage
-
-        // Optionally, you can display a preview
+  
+        // Optionally, display a preview
         const blob = new Blob([buffer], { type: file.type });
         const previewUrl = URL.createObjectURL(blob);
-        setImagePreview(previewUrl);
+        setImagePreview(previewUrl); // Set the preview for the image
       };
       reader.readAsArrayBuffer(file); // Read the file as an ArrayBuffer
     } else {
       alert("Please upload a valid image file.");
     }
   };
+  
   return (
     <div>
       <Navbar />

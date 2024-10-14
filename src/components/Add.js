@@ -32,7 +32,7 @@ function Add() {
     };
     console.log("Data to be sent:", data);
     axios
-      .post("http://localhost:5000/api/items/add", data)
+      .post(process.env.REACT_APP_URI + "/buildings", data)
       .then((res) => {
         console.log("Building added successful:", res.data);
         navigate("/manager");

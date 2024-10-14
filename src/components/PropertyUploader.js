@@ -20,7 +20,7 @@ const PropertyUploader = ({ refreshBuildings }) => {
       return;
     }
 
-    // Parse CSV file
+    // Parse CSV file using PapaParse
     Papa.parse(file, {
       header: true,
       complete: async (results) => {
@@ -35,16 +35,15 @@ const PropertyUploader = ({ refreshBuildings }) => {
             previousOwner,
             leaseRate,
             vacancyRate,
-            lsf, // lsf is lastSoldFor
-            on, // on is dateLastSoldOn
+            lsf,
+            on,
             link,
           } = property;
-          // console.log(property);
 
-          // Send data to backend API
+          // Send each property to backend API
           try {
             const response = await fetch(
-              "http://localhost:5000/submit-property",
+              `${process.env.REACT_APP_URI}/buildings`,
               {
                 method: "POST",
                 headers: {
@@ -80,7 +79,7 @@ const PropertyUploader = ({ refreshBuildings }) => {
       },
     });
   };
-
+  
   return (
     <div className="import-container">
       <form onSubmit={handleSubmit}>
@@ -97,9 +96,11 @@ const PropertyUploader = ({ refreshBuildings }) => {
         <Link className="import-submit2" to={`/add`}>
           Add +
         </Link>
-        <div className="upload-message">
-          {uploadMessage && <p>{uploadMessage}</p>}
-        </div>
+        {uploadMessage && (
+          <div className="uploader-message">
+            <p>{uploadMessage}</p>
+          </div>
+        )}
       </form>
     </div>
   );
