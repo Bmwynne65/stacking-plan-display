@@ -38,20 +38,21 @@ const DisplayBldgInfo = () => {
   }, []);
 
   // Deletes a building
-  const handleDelete = (buildingId) => {
+  const handleDelete = (Id) => {
+    // console.log("DELETE ID: ", Id)
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this building?"
     );
 
     if (confirmDelete) {
       axios
-        .delete(process.env.REACT_APP_URI + `${buildingId}`)
+        .delete(process.env.REACT_APP_URI + "/buildings/" + Id)
         .then((res) => {
           console.log("Building deleted successfully:", res.data);
           // Update the state to remove the deleted building
           setBuildings((prevBuildings) =>
             prevBuildings.filter(
-              (building) => building.buildingId !== buildingId
+              (building) => building._id !== Id
             )
           );
           console.log("Updated buildings list:", buildings); // Check if the state is correctly updated

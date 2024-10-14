@@ -61,7 +61,7 @@ td {
 
 tr:nth-child(n + 1):hover {
   cursor: pointer;
-  background-color: #c9ccc9;
+  background-color: #74df74;
 }
 
 tr:nth-child(even) {
